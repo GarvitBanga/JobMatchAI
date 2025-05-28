@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobMatch Settings</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%);
+            color: #ecf0f1;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(236, 240, 241, 0.1);
+        }
+        
+        .logo {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 16px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
+        }
+        
+        .logo::before {
+            content: "JM";
+            color: white;
+            font-weight: 700;
+            font-size: 20px;
+        }
+        
+        h1 {
+            color: #ecf0f1;
+            margin: 0 0 8px 0;
+            font-size: 28px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+        
+        .subtitle {
+            color: #95a5a6;
+            font-size: 16px;
+            margin: 0;
+        }
+        
+        .form-section {
+            background: rgba(52, 73, 94, 0.4);
+            border: 1px solid rgba(52, 152, 219, 0.2);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-group:last-child {
+            margin-bottom: 0;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #ecf0f1;
+            font-size: 14px;
+        }
+        
+        input[type="text"], 
+        input[type="url"], 
+        input[type="number"],
+        input[type="file"] {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid rgba(52, 152, 219, 0.3);
+            border-radius: 10px;
+            font-size: 14px;
+            background: rgba(44, 62, 80, 0.6);
+            color: #ecf0f1;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+        
+        input[type="text"]:focus, 
+        input[type="url"]:focus, 
+        input[type="number"]:focus,
+        input[type="file"]:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 12px;
+            accent-color: #3498db;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin-top: 8px;
+        }
+        
+        .checkbox-group label {
+            margin-bottom: 0;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+            letter-spacing: 0.5px;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(135deg, #2980b9, #1f5f8b);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(52, 73, 94, 0.6);
+            border: 1px solid rgba(52, 152, 219, 0.3);
+            margin-left: 12px;
+            box-shadow: none;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(52, 73, 94, 0.8);
+            border-color: rgba(52, 152, 219, 0.5);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(52, 73, 94, 0.3);
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 10px;
+            display: none;
+            font-weight: 500;
+        }
+        
+        .status.success {
+            background: rgba(39, 174, 96, 0.2);
+            border: 1px solid rgba(39, 174, 96, 0.3);
+            color: #27ae60;
+        }
+        
+        .status.error {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            color: #e74c3c;
+        }
+        
+        .description {
+            color: #95a5a6;
+            font-size: 12px;
+            margin-top: 6px;
+            line-height: 1.4;
+        }
+        
+        .button-group {
+            margin-top: 32px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .about-section {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(236, 240, 241, 0.1);
+        }
+        
+        .about-section h3 {
+            color: #ecf0f1;
+            margin: 0 0 12px 0;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .about-section p {
+            color: #95a5a6;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0 0 20px 0;
+        }
+        
+        .version-info {
+            background: rgba(52, 73, 94, 0.3);
+            border: 1px solid rgba(52, 152, 219, 0.1);
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .version-info strong {
+            color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo"></div>
+            <h1>JobMatch Settings</h1>
+            <div class="subtitle">Configure your resume matching preferences</div>
+        </div>
+        
+        <div class="form-section">
+            <form id="settingsForm">
+
+                
+                <div class="form-group">
+                    <label for="matchThreshold">Minimum Match Score (%)</label>
+                    <input type="number" id="matchThreshold" min="0" max="100" placeholder="70">
+                    <div class="description">Only display jobs with match scores above this threshold</div>
+                </div>
+                
+
+                
+                <div class="form-group">
+                    <label for="resumeFile">Resume Upload</label>
+                    <input type="file" id="resumeFile" accept=".pdf,.doc,.docx,.txt">
+                    <div class="description">Upload your resume for better job matching (stored locally in your browser)</div>
+                </div>
+                
+                <div class="button-group">
+                    <button type="submit" class="btn">Save Settings</button>
+                    <button type="button" class="btn btn-secondary" id="resetBtn">Reset to Defaults</button>
+                </div>
+                
+                <div id="status" class="status"></div>
+            </form>
+        </div>
+        
+        <div class="about-section">
+            <h3>About JobMatch</h3>
+            <div class="version-info">
+                <strong>JobMatch</strong> - Professional Resume Matcher v1.0.0<br>
+                Automatically scans company career pages and matches job descriptions against your resume using advanced AI technology.
+            </div>
+            <button type="button" class="btn btn-secondary" id="testConnectionBtn">Test API Connection</button>
+        </div>
+    </div>
+
+    <script src="options.js"></script>
+</body>
+</html> 

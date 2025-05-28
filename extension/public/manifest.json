@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "JobMatch - AI Resume Matcher",
+  "version": "1.0.0",
+  "description": "AI-powered job scanner that matches your resume against job postings. Get relevance scores and find your perfect role faster.",
+  "author": "JobMatch Team",
+  "homepage_url": "https://github.com/garvitbanga/JobMatch",
+  "minimum_chrome_version": "88",
+  "offline_enabled": false,
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://jobmatch-production.up.railway.app/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "JobMatch - AI Resume Matcher",
+    "default_icon": {
+      "16": "logo192.png",
+      "48": "logo192.png",
+      "128": "logo128.png"
+    }
+  },
+  "options_page": "options.html",
+  "icons": {
+    "16": "logo192.png",
+    "48": "logo192.png",
+    "128": "logo128.png"
+  }
+} 

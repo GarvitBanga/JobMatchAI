@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobMatch - Resume Matcher</title>
+    <style>
+        body {
+            width: 400px;
+            height: 600px;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 50%, #2c3e50 100%);
+            color: #ecf0f1;
+            overflow: hidden;
+        }
+        
+        .container {
+            padding: 24px;
+            height: calc(100% - 48px);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(236, 240, 241, 0.1);
+        }
+        
+        .logo {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 12px;
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+        }
+        
+        .logo::before {
+            content: "JM";
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 600;
+            color: #ecf0f1;
+            letter-spacing: -0.5px;
+        }
+        
+        .subtitle {
+            font-size: 13px;
+            color: #95a5a6;
+            margin-top: 4px;
+            font-weight: 400;
+        }
+        
+        .scan-section {
+            background: rgba(52, 73, 94, 0.4);
+            border: 1px solid rgba(52, 152, 219, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .scan-button {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+            letter-spacing: 0.5px;
+        }
+        
+        .scan-button:hover {
+            background: linear-gradient(135deg, #2980b9, #1f5f8b);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(52, 152, 219, 0.4);
+        }
+        
+        .scan-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .status {
+            margin: 16px 0;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        .status.loading {
+            background: rgba(241, 196, 15, 0.2);
+            border: 1px solid rgba(241, 196, 15, 0.3);
+            color: #f1c40f;
+        }
+        
+        .status.success {
+            background: rgba(39, 174, 96, 0.2);
+            border: 1px solid rgba(39, 174, 96, 0.3);
+            color: #27ae60;
+        }
+        
+        .status.error {
+            background: rgba(231, 76, 60, 0.2);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            color: #e74c3c;
+        }
+        
+        .results {
+            flex: 1;
+            overflow-y: auto;
+            margin-top: 8px;
+            padding-right: 4px;
+        }
+        
+        .results::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .results::-webkit-scrollbar-track {
+            background: rgba(52, 73, 94, 0.3);
+            border-radius: 2px;
+        }
+        
+        .results::-webkit-scrollbar-thumb {
+            background: rgba(52, 152, 219, 0.5);
+            border-radius: 2px;
+        }
+        
+        .job-item {
+            background: rgba(52, 73, 94, 0.3);
+            border: 1px solid rgba(52, 152, 219, 0.1);
+            border-radius: 10px;
+            padding: 16px;
+            margin: 12px 0;
+            font-size: 13px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .job-item:hover {
+            background: rgba(52, 73, 94, 0.5);
+            border-color: rgba(52, 152, 219, 0.3);
+            transform: translateY(-1px);
+        }
+        
+        .job-title {
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #ecf0f1;
+            font-size: 14px;
+            line-height: 1.3;
+        }
+        
+        .job-company {
+            color: #95a5a6;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+        
+        .job-location {
+            color: #7f8c8d;
+            font-size: 11px;
+            margin-bottom: 8px;
+        }
+        
+        .match-score {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            box-shadow: 0 2px 6px rgba(39, 174, 96, 0.3);
+        }
+        
+        .match-score.medium {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+            box-shadow: 0 2px 6px rgba(243, 156, 18, 0.3);
+        }
+        
+        .match-score.low {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+            box-shadow: 0 2px 6px rgba(149, 165, 166, 0.3);
+        }
+        
+        .actions {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(236, 240, 241, 0.1);
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-button {
+            background: rgba(52, 73, 94, 0.4);
+            color: #bdc3c7;
+            border: 1px solid rgba(52, 152, 219, 0.2);
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            flex: 1;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .action-button:hover {
+            background: rgba(52, 73, 94, 0.6);
+            border-color: rgba(52, 152, 219, 0.4);
+            color: #ecf0f1;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(241, 196, 15, 0.3);
+            border-radius: 50%;
+            border-top-color: #f1c40f;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+        <div class="header">
+            <div class="logo"></div>
+            <h1>JobMatch</h1>
+            <div class="subtitle">Professional Resume Matching</div>
+        </div>
+        
+        <div class="scan-section">
+            <button id="scanButton" class="scan-button">
+                Scan Current Page
+            </button>
+            
+            <div id="status" class="status hidden">
+                Ready to scan...
+            </div>
+            
+            <div id="results" class="results hidden">
+                <!-- Job matches will appear here -->
+            </div>
+        </div>
+        
+        <div class="actions">
+            <button id="settingsButton" class="action-button">Settings</button>
+            <button id="helpButton" class="action-button">Help</button>
+        </div>
+    </div>
+    
+    <script src="popup.js"></script>
+  </body>
+</html>
